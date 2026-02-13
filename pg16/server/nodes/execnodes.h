@@ -154,8 +154,9 @@ typedef struct ExprState
  *		UniqueOps			These are like Exclusion*, but for unique indexes
  *		UniqueProcs
  *		UniqueStrats
- *		Unique				is it a unique index?
  *		OpclassOptions		opclass-specific options, or NULL if none
+ *		Unique				is it a unique index?
+ *		NullsNotDistinct	is NULLS NOT DISTINCT?
  *		ReadyForInserts		is it valid for inserts?
  *		CheckedUnchanged	IndexUnchanged status determined yet?
  *		IndexUnchanged		aminsert hint, cached for retail inserts
@@ -476,6 +477,9 @@ typedef struct ResultRelInfo
 	/* Have the projection and the slots above been initialized? */
 	bool		ri_projectNewInfoValid;
 
+	/* updates do LockTuple() before oldtup read; see README.tuplock */
+	bool		ri_needLockTagTuple;
+
 	/* triggers to be fired, if any */
 	TriggerDesc *ri_TrigDesc;
 
@@ -561,15 +565,13 @@ typedef struct ResultRelInfo
 	bool		ri_RootToChildMapValid;
 
 	/*
-	 * Information needed by tuple routing target relations
+	 * Other information needed by child result relations
 	 *
-	 * RootResultRelInfo gives the target relation mentioned in the query, if
-	 * it's a partitioned table. It is not set if the target relation
-	 * mentioned in the query is an inherited table, nor when tuple routing is
-	 * not needed.
+	 * ri_RootResultRelInfo gives the target relation mentioned in the query.
+	 * Used as the root for tuple routing and/or transition capture.
 	 *
-	 * PartitionTupleSlot is non-NULL if RootToChild conversion is needed and
-	 * the relation is a partition.
+	 * ri_PartitionTupleSlot is non-NULL if the relation is a partition to
+	 * route tuples into and ri_RootToChildMap conversion is needed.
 	 */
 	struct ResultRelInfo *ri_RootResultRelInfo;
 	TupleTableSlot *ri_PartitionTupleSlot;
@@ -1600,6 +1602,8 @@ typedef struct IndexScanState
  *		TableSlot		   slot for holding tuples fetched from the table
  *		VMBuffer		   buffer in use for visibility map testing, if any
  *		PscanLen		   size of parallel index-only scan descriptor
+ *		NameCStringAttNums attnums of name typed columns to pad to NAMEDATALEN
+ *		NameCStringCount   number of elements in the NameCStringAttNums array
  * ----------------
  */
 typedef struct IndexOnlyScanState
@@ -1619,6 +1623,8 @@ typedef struct IndexOnlyScanState
 	TupleTableSlot *ioss_TableSlot;
 	Buffer		ioss_VMBuffer;
 	Size		ioss_PscanLen;
+	AttrNumber *ioss_NameCStringAttNums;
+	int			ioss_NameCStringCount;
 } IndexOnlyScanState;
 
 /* ----------------

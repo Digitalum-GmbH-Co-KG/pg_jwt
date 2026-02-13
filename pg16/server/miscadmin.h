@@ -113,7 +113,8 @@ extern void ProcessInterrupts(void);
 	(unlikely(InterruptPending))
 #else
 #define INTERRUPTS_PENDING_CONDITION() \
-	(unlikely(UNBLOCKED_SIGNAL_QUEUE()) ? pgwin32_dispatch_queued_signals() : 0, \
+	(unlikely(UNBLOCKED_SIGNAL_QUEUE()) ? \
+	 pgwin32_dispatch_queued_signals() : (void) 0, \
 	 unlikely(InterruptPending))
 #endif
 
@@ -345,6 +346,8 @@ typedef enum BackendType
 
 extern PGDLLIMPORT BackendType MyBackendType;
 
+#define AmRegularBackendProcess()	(MyBackendType == B_BACKEND)
+
 extern const char *GetBackendTypeDesc(BackendType backendType);
 
 extern void SetDatabasePath(const char *path);
@@ -356,7 +359,10 @@ extern char *GetUserNameFromId(Oid roleid, bool noerr);
 extern Oid	GetUserId(void);
 extern Oid	GetOuterUserId(void);
 extern Oid	GetSessionUserId(void);
+extern bool GetSessionUserIsSuperuser(void);
 extern Oid	GetAuthenticatedUserId(void);
+extern bool GetAuthenticatedUserIsSuperuser(void);
+extern void SetAuthenticatedUserId(Oid userid, bool is_superuser);
 extern void GetUserIdAndSecContext(Oid *userid, int *sec_context);
 extern void SetUserIdAndSecContext(Oid userid, int sec_context);
 extern bool InLocalUserIdChange(void);

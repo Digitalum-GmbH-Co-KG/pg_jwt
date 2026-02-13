@@ -44,7 +44,7 @@
 #define BLCKSZ 8192
 
 /* Saved arguments from configure */
-#define CONFIGURE_ARGS " '--host=x86_64-suse-linux-gnu' '--build=x86_64-suse-linux-gnu' '--program-prefix=' '--prefix=/usr' '--exec-prefix=/usr' '--bindir=/usr/bin' '--sbindir=/usr/sbin' '--sysconfdir=/etc' '--datadir=/usr/share' '--includedir=/usr/include' '--libdir=/usr/lib64' '--libexecdir=/usr/lib' '--localstatedir=/var' '--sharedstatedir=/var/lib' '--infodir=/usr/share/info' '--disable-dependency-tracking' '--bindir=/usr/lib/postgresql14/bin' '--libdir=/usr/lib/postgresql14/lib64' '--includedir=/usr/include/pgsql' '--datadir=/usr/share/postgresql14' '--docdir=/usr/share/doc/packages/postgresql14' '--mandir=/usr/share/man' '--disable-rpath' '--enable-nls' '--enable-thread-safety' '--enable-integer-datetimes' '--with-python' '--with-perl' '--with-tcl' '--with-tclconfig=/usr/lib64' '--with-pam' '--with-uuid=e2fs' '--with-libxml' '--with-libxslt' '--with-lz4' '--with-zstd' '--with-systemd' '--with-selinux' '--with-icu' '--with-llvm' '--with-openssl' '--with-ldap' '--with-gssapi' '--with-krb5' '--with-system-tzdata=/usr/share/zoneinfo' 'build_alias=x86_64-suse-linux-gnu' 'host_alias=x86_64-suse-linux-gnu' 'CFLAGS=-fmessage-length=0 -grecord-gcc-switches -O2 -Wall -D_FORTIFY_SOURCE=2 -fstack-protector-strong -funwind-tables -fasynchronous-unwind-tables -fstack-clash-protection -g' 'CXXFLAGS=-fmessage-length=0 -grecord-gcc-switches -O2 -Wall -D_FORTIFY_SOURCE=2 -fstack-protector-strong -funwind-tables -fasynchronous-unwind-tables -fstack-clash-protection -g' 'PKG_CONFIG_PATH=:/usr/lib64/pkgconfig:/usr/share/pkgconfig' 'PYTHON=python3'"
+#define CONFIGURE_ARGS " '--host=x86_64-suse-linux' '--build=x86_64-suse-linux' '--program-prefix=' '--disable-dependency-tracking' '--prefix=/usr' '--exec-prefix=/usr' '--bindir=/usr/bin' '--sbindir=/usr/sbin' '--sysconfdir=/etc' '--datadir=/usr/share' '--includedir=/usr/include' '--libdir=/usr/lib64' '--libexecdir=/usr/libexec' '--localstatedir=/var' '--sharedstatedir=/var/lib' '--infodir=/usr/share/info' '--bindir=/usr/lib/postgresql14/bin' '--libdir=/usr/lib/postgresql14/lib64' '--includedir=/usr/include/pgsql' '--datadir=/usr/share/postgresql14' '--docdir=/usr/share/doc/packages/postgresql14' '--mandir=/usr/share/man' '--disable-rpath' '--enable-nls' '--enable-thread-safety' '--enable-integer-datetimes' '--with-python' '--with-perl' '--with-tcl' '--with-tclconfig=/usr/lib64' '--with-pam' '--with-uuid=e2fs' '--with-libxml' '--with-libxslt' '--with-lz4' '--with-zstd' '--with-systemd' '--with-selinux' '--with-icu' '--with-llvm' '--with-openssl' '--with-ldap' '--with-gssapi' '--with-krb5' '--with-system-tzdata=/usr/share/zoneinfo' 'build_alias=x86_64-suse-linux' 'host_alias=x86_64-suse-linux' 'CFLAGS=-O2 -Wall -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -fstack-protector-strong -funwind-tables -fasynchronous-unwind-tables -fstack-clash-protection -Werror=return-type -flto=auto -ffat-lto-objects -g' 'LDFLAGS=-flto=auto -ffat-lto-objects' 'CXXFLAGS=-O2 -Wall -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -fstack-protector-strong -funwind-tables -fasynchronous-unwind-tables -fstack-clash-protection -Werror=return-type -flto=auto -ffat-lto-objects -g' 'PKG_CONFIG_PATH=:/usr/lib64/pkgconfig:/usr/share/pkgconfig' 'PYTHON=python3'"
 
 /* Define to the default TCP port number on which the server listens and to
    which clients will try to connect. This can be overridden at run-time, but
@@ -86,9 +86,6 @@
 
 /* Define to 1 if you have the `backtrace_symbols' function. */
 #define HAVE_BACKTRACE_SYMBOLS 1
-
-/* Define to 1 if you have the `BIO_get_data' function. */
-#define HAVE_BIO_GET_DATA 1
 
 /* Define to 1 if you have the `BIO_meth_new' function. */
 #define HAVE_BIO_METH_NEW 1
@@ -137,7 +134,11 @@
 
 /* Define to 1 if you have the declaration of `LLVMOrcGetSymbolAddressIn', and
    to 0 if you don't. */
-#define HAVE_DECL_LLVMORCGETSYMBOLADDRESSIN 1
+#define HAVE_DECL_LLVMORCGETSYMBOLADDRESSIN 0
+
+/* Define to 1 if you have the declaration of `memset_s', and to 0 if you
+   don't. */
+#define HAVE_DECL_MEMSET_S 0
 
 /* Define to 1 if you have the declaration of `posix_fadvise', and to 0 if you
    don't. */
@@ -159,13 +160,17 @@
    don't. */
 #define HAVE_DECL_RTLD_NOW 1
 
+/* Define to 1 if you have the declaration of `strchrnul', and to 0 if you
+   don't. */
+#define HAVE_DECL_STRCHRNUL 1
+
 /* Define to 1 if you have the declaration of `strlcat', and to 0 if you
    don't. */
-#define HAVE_DECL_STRLCAT 0
+#define HAVE_DECL_STRLCAT 1
 
 /* Define to 1 if you have the declaration of `strlcpy', and to 0 if you
    don't. */
-#define HAVE_DECL_STRLCPY 0
+#define HAVE_DECL_STRLCPY 1
 
 /* Define to 1 if you have the declaration of `strnlen', and to 0 if you
    don't. */
@@ -385,9 +390,6 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
 
-/* Define to 1 if you have the `memset_s' function. */
-/* #undef HAVE_MEMSET_S */
-
 /* Define to 1 if the system has the type `MINIDUMP_TYPE'. */
 /* #undef HAVE_MINIDUMP_TYPE */
 
@@ -518,17 +520,14 @@
 /* Define to 1 if you have the `srandom' function. */
 #define HAVE_SRANDOM 1
 
-/* Define to 1 if stdbool.h conforms to C99. */
-#define HAVE_STDBOOL_H 1
+/* Define to 1 if you have the `SSL_CTX_set_num_tickets' function. */
+#define HAVE_SSL_CTX_SET_NUM_TICKETS 1
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H 1
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #define HAVE_STDLIB_H 1
-
-/* Define to 1 if you have the `strchrnul' function. */
-#define HAVE_STRCHRNUL 1
 
 /* Define to 1 if you have the `strerror_r' function. */
 #define HAVE_STRERROR_R 1
@@ -540,10 +539,10 @@
 #define HAVE_STRING_H 1
 
 /* Define to 1 if you have the `strlcat' function. */
-/* #undef HAVE_STRLCAT */
+#define HAVE_STRLCAT 1
 
 /* Define to 1 if you have the `strlcpy' function. */
-/* #undef HAVE_STRLCPY */
+#define HAVE_STRLCPY 1
 
 /* Define to 1 if you have the `strnlen' function. */
 #define HAVE_STRNLEN 1
@@ -731,9 +730,6 @@
 /* Define to 1 if the assembler supports X86_64's POPCNTQ instruction. */
 #define HAVE_X86_64_POPCNTQ 1
 
-/* Define to 1 if the system has the type `_Bool'. */
-#define HAVE__BOOL 1
-
 /* Define to 1 if your compiler understands __builtin_bswap16. */
 #define HAVE__BUILTIN_BSWAP16 1
 
@@ -808,7 +804,7 @@
 #define PACKAGE_NAME "PostgreSQL"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "PostgreSQL 14.10"
+#define PACKAGE_STRING "PostgreSQL 14.21"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "postgresql"
@@ -817,7 +813,7 @@
 #define PACKAGE_URL "https://www.postgresql.org/"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "14.10"
+#define PACKAGE_VERSION "14.21"
 
 /* Define to the name of a signed 128-bit integer type. */
 #define PG_INT128_TYPE __int128
@@ -836,7 +832,7 @@
 #define PG_MAJORVERSION_NUM 14
 
 /* PostgreSQL minor version number */
-#define PG_MINORVERSION_NUM 10
+#define PG_MINORVERSION_NUM 21
 
 /* Define to best printf format archetype, usually gnu_printf if available. */
 #define PG_PRINTF_ATTRIBUTE gnu_printf
@@ -845,13 +841,13 @@
 #define PG_USE_STDBOOL 1
 
 /* PostgreSQL version as a string */
-#define PG_VERSION "14.10"
+#define PG_VERSION "14.21"
 
 /* PostgreSQL version as a number */
-#define PG_VERSION_NUM 140010
+#define PG_VERSION_NUM 140021
 
 /* A string containing the version number, platform, and C compiler */
-#define PG_VERSION_STR "PostgreSQL 14.10 on x86_64-suse-linux-gnu, compiled by gcc (SUSE Linux) 7.5.0, 64-bit"
+#define PG_VERSION_STR "PostgreSQL 14.21 on x86_64-suse-linux-gnu, compiled by gcc (SUSE Linux) 13.4.0, 64-bit"
 
 /* Define to 1 to allow profiling output to be saved separately for each
    process. */
@@ -942,10 +938,10 @@
 /* #undef USE_SLICING_BY_8_CRC32C */
 
 /* Define to 1 use Intel SSE 4.2 CRC instructions. */
-/* #undef USE_SSE42_CRC32C */
+#define USE_SSE42_CRC32C 1
 
 /* Define to 1 to use Intel SSE 4.2 CRC instructions with a runtime check. */
-#define USE_SSE42_CRC32C_WITH_RUNTIME_CHECK 1
+/* #undef USE_SSE42_CRC32C_WITH_RUNTIME_CHECK */
 
 /* Define to build with systemd support. (--with-systemd) */
 #define USE_SYSTEMD 1
